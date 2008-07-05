@@ -12,8 +12,8 @@ ignore_suffix = [
     '.avi',
 ]
 
-ignore_domain = []
-
 optimize = False
 threadpause = .5
 maxthreads = 10
+
+link_regex = r'href="([^\"]+)"'

@@ -4,6 +4,8 @@ import urllib
 import random
 import threading
 
+import Configuration
+
 class Spider(threading.Thread):
     
     def __init__(self, pool, history, **kwargs):
@@ -12,23 +14,14 @@ class Spider(threading.Thread):
         self.pool = pool
         self.history = history
 
-        self.ignoreextensions = (
-            '.css',
-            '.png',
-            '.jpg',
-            '.jpeg',
-            '.gif'
-        )
-
         self.args = kwargs
-
-        self.quit = False
         
     def run(self):
         # Set the current url in the pool to assigned, but no DB (thanks Mike!)
         # Oh wait, I can't, no DB exists
         global running
         running += 1
+
         # Pick a url
         self.pool.sort()
         index = random.randint(0, len(self.pool)-1)
@@ -85,7 +78,7 @@ if __name__ == '__main__':
             if len(pool) > 0 and running <5:
                 Spider(pool, history, filter=regex).start()
 
-                print "%d/%d | %d/%d | %.02f rps | %.02f lps" % (running,5,len(history),len(pool), len(history)/(time.time()-start), len(pool)/(time.time()-start))
+                print "%d/%d threads | %d/%d pool | %.02f rps | %.02f lps" % (running,5,len(history),len(pool), len(history)/(time.time()-start), len(pool)/(time.time()-start))
             time.sleep(.4)
         except:
             print "Running: %d" % running
